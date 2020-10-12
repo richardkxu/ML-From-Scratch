@@ -4,7 +4,7 @@ import math
 from sklearn import datasets
 
 from mlfromscratch.utils import train_test_split, to_categorical, normalize, accuracy_score, Plot
-from mlfromscratch.deep_learning.activation_functions import Sigmoid, Softmax
+from mlfromscratch.deep_learning.activation_functions import Sigmoid, Softmax, ReLU
 from mlfromscratch.deep_learning.loss_functions import CrossEntropy
 
 class MultilayerPerceptron():
@@ -24,7 +24,7 @@ class MultilayerPerceptron():
         self.n_hidden = n_hidden
         self.n_iterations = n_iterations
         self.learning_rate = learning_rate
-        self.hidden_activation = Sigmoid()
+        self.hidden_activation = ReLU()
         self.output_activation = Softmax()
         self.loss = CrossEntropy()
 
@@ -90,11 +90,12 @@ class MultilayerPerceptron():
 
 
 def main():
+    # https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_digits.html
     data = datasets.load_digits()
     X = normalize(data.data)
     y = data.target
 
-    # Convert the nominal y values to binary
+    # Convert the nominal y values to one-hot
     y = to_categorical(y)
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, seed=1)
